@@ -6,20 +6,58 @@ import * as vscode from 'vscode';
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "DeepSeek" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('DeepSeek.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from DeepSeek-extension!');
+	const disposable = vscode.commands.registerCommand('DeepSeek.start', () => {
+		
+		const panel = vscode.window.createWebviewPanel(
+			'deepseek',
+			'Deep Seek Chat',
+			vscode.ViewColumn.One,
+			{enableScripts: true}
+		);
+
+		panel.webview.html = getWebviewStructure();
+
 	});
 
 	context.subscriptions.push(disposable);
+}
+
+function getWebviewStructure() : string {
+	return /*html*/`
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				padding: 20px;
+			}
+			#response { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+		</style>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Deep Seek Chat</title>
+	</head>
+	<body>
+		<h1>Deep Seek Chat</h1>
+		<textarea id="chat" style="width: 100%; height: 300px;" placeholder="Ask something..."></textarea><br/>
+		<button id="ask">Ask</button>
+		<div id="response"></div>
+
+		<script>
+			const vscode = acquireVsCodeApi();
+
+			document.getElementById('ask').addEventListener('click', () => {
+				const text = document.getElementById('chat').value;
+				vscode.postMessage({command: 'ask', text: text});	
+			});
+
+
+		</script>
+	</body>
+	</html>
+	`;
 }
 
 // This method is called when your extension is deactivated

@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "DeepSeek.helloWorld",
-        "title": "Hello World"
+        "command": "DeepSeek.start",
+        "title": "Start DeepSeek"
       }
     ]
   },
