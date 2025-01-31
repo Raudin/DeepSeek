@@ -7,7 +7,7 @@ This VSCode extension integrates DeepSeek LLM locally using Ollama, providing AI
 1. Install [Ollama](https://ollama.ai/download)
 2. Pull the DeepSeek model:
 ```bash
-ollama pull deepseek-coder
+ollama run deepseek-r1:8b
 ```
 
 ## Installation
